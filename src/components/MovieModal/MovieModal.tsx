@@ -2,23 +2,29 @@ import { useEffect } from "react";
 import type { Movie } from "../../types/movie";
 import css from "./MovieModal.module.css";
 
-interface Props {
+interface MovieModalProps {
   movie: Movie;
   onClose: () => void;
 }
 
-export default function MovieModal({ movie, onClose }: Props) {
+export default function MovieModal({ movie, onClose }: MovieModalProps) {
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) onClose();
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
   };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+      }
     };
 
     document.body.style.overflow = "hidden";
+
     window.addEventListener("keydown", handleKeyDown);
+
     return () => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", handleKeyDown);
@@ -40,11 +46,13 @@ export default function MovieModal({ movie, onClose }: Props) {
         >
           &times;
         </button>
-        <img
-          src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
-          alt={movie.title}
-          className={css.image}
-        />
+        {movie.backdrop_path && (
+          <img
+            src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+            alt={movie.title}
+            className={css.image}
+          />
+        )}
         <div className={css.content}>
           <h2>{movie.title}</h2>
           <p>{movie.overview}</p>
